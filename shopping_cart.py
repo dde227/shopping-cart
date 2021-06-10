@@ -34,21 +34,27 @@ def to_usd(my_price):
     """
     return f"${my_price:,.2f}"
 
-print(len(products))
 
-
-#1) capture product IDs until done
-#use infinite while loop
+# 1) capture product IDs until done
+# use infinite while loop
 
 selected_ids = []
+valid_ids = []
+valid_ids_range = range(1,21)
+
+for id in valid_ids_range:
+    valid_ids.append(str(id))
 
 while True: 
     
     selected_id = input("Please select / scan a valid product id: ")
     if selected_id.upper() == "DONE":
         break
-    else:
-        selected_ids.append(selected_id)
+    else:      
+        if selected_id in valid_ids:
+            selected_ids.append(selected_id)
+        else:
+            print("Hey, are you sure that product identifier is correct? Please try again!")
     print(selected_id)
 
 print("WE HAVE REACHED THE END OF THE LOOP")

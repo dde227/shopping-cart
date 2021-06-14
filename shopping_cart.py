@@ -38,8 +38,8 @@ def to_usd(my_price):
 # 1) capture product IDs until done using infinite loop
 
 selected_ids = []
-valid_ids_range = range(1,21)
 
+valid_ids_range = range(1,21)
 valid_ids = [str(id) for id in valid_ids_range]
 
 while True: 
@@ -68,7 +68,19 @@ print("---------------------------------")
 print("SELECTED PRODUCTS:")
 
 
+subtotal = 0
+
 for selected_id in selected_ids:
     matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
     matching_product = matching_products[0]
     print("... "+matching_product["name"]+" ("+to_usd(matching_product["price"])+")")
+    subtotal = subtotal + (float(matching_product["price"]))
+
+print("---------------------------------")
+print(f"SUBTOTAL: {to_usd(subtotal)}")
+print(f"TAX: {to_usd(subtotal*0.0875)}")
+print(f"TOTAL: {to_usd(subtotal*1.0875)}")
+print("---------------------------------")
+print("THANKS, SEE YOU AGAIN SOON!")
+print("---------------------------------")
+

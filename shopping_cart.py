@@ -35,15 +35,12 @@ def to_usd(my_price):
     return f"${my_price:,.2f}"
 
 
-# 1) capture product IDs until done
-# use infinite while loop
+# 1) capture product IDs until done using infinite loop
 
 selected_ids = []
-valid_ids = []
 valid_ids_range = range(1,21)
 
-for id in valid_ids_range:
-    valid_ids.append(str(id))
+valid_ids = [str(id) for id in valid_ids_range]
 
 while True: 
     
@@ -55,16 +52,20 @@ while True:
             selected_ids.append(selected_id)
         else:
             print("Hey, are you sure that product identifier is correct? Please try again!")
-    print(selected_id)
+    
 
-print("WE HAVE REACHED THE END OF THE LOOP")
-print(selected_ids)
+# 2) perform product lookups to determine the product's name and print price
 
-#2) perform product lookups to determine the product's name and print price
+print("---------------------------------")
+print("GREEN FOODS GROCERY")
+print("WWW.GREEN-FOODS-GROCERY.COM")
+print("---------------------------------")
+print("CHECKOUT AT:")
+print("---------------------------------")
+print("SELECTED PRODUCTS:")
+
 
 for selected_id in selected_ids:
-    print(selected_id)
-
     matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
     matching_product = matching_products[0]
-    print(matching_product["name"], matching_product["price"])
+    print("... "+matching_product["name"]+" ("+to_usd(matching_product["price"])+")")

@@ -56,11 +56,14 @@ while True:
 
 # 2) perform product lookups to determine the product's name and print price
 
+import datetime
+now = datetime.datetime.now()
+
 print("---------------------------------")
 print("GREEN FOODS GROCERY")
 print("WWW.GREEN-FOODS-GROCERY.COM")
 print("---------------------------------")
-print("CHECKOUT AT:")
+print("CHECKOUT AT: "+now.strftime("%Y-%m-%d %I:%M %p"))
 print("---------------------------------")
 print("SELECTED PRODUCTS:")
 

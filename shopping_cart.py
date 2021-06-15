@@ -35,7 +35,7 @@ def to_usd(my_price):
     return f"${my_price:,.2f}"
 
 
-# 1) capture product IDs until done using infinite loop
+# 1) capture product IDs until done using infinite loop with data input validation
 
 selected_ids = []
 
@@ -54,7 +54,7 @@ while True:
             print("Hey, are you sure that product identifier is correct? Please try again!")
     
 
-# 2) perform product lookups to determine the product's name and print price
+# 2) print receipt header including timestamp 
 
 import datetime
 now = datetime.datetime.now()
@@ -68,6 +68,8 @@ print("---------------------------------")
 print("SELECTED PRODUCTS:")
 
 
+# 3) perform product lookups to determine the product's name and price and compute subtotal 
+
 subtotal = 0
 
 for selected_id in selected_ids:
@@ -76,10 +78,20 @@ for selected_id in selected_ids:
     print("... "+matching_product["name"]+" ("+to_usd(matching_product["price"])+")")
     subtotal = subtotal + (float(matching_product["price"]))
 
+
+# 4) prints the subtotal, tax, and total using the .env file varialbe
+
+import os
+import dotenv
+
+dotenv.load_dotenv()
+
+tax_rate = float(os.getenv("TAX_RATE"))
+
 print("---------------------------------")
 print(f"SUBTOTAL: {to_usd(subtotal)}")
-print(f"TAX: {to_usd(subtotal*0.0875)}")
-print(f"TOTAL: {to_usd(subtotal*1.0875)}")
+print(f"TAX: {to_usd(subtotal*tax_rate)}")
+print(f"TOTAL: {to_usd(subtotal*(1+tax_rate))}")
 print("---------------------------------")
 print("THANKS, SEE YOU AGAIN SOON!")
 print("---------------------------------")

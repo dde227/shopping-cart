@@ -96,3 +96,52 @@ print("---------------------------------")
 print("THANKS, SEE YOU AGAIN SOON!")
 print("---------------------------------")
 
+
+# 5) send email receipt
+
+
+cust_consent = input("Does the customer want an email receipt (yes or no): ")
+if cust_consent.upper() == "YES":       
+    cust_email = input("Please input email address: ")
+
+    current_time = now.strftime("%Y-%m-%d %I:%M %p")
+    total = to_usd(subtotal*(1+tax_rate))
+
+    products_list = []
+    for selected_id in selected_ids:
+        empty_dict = {}
+        empty_dict["id"] = int(selected_id)
+        matching_products = [p for p in products if str(p["id"]) == str(selected_id)]
+        matching_product = matching_products[0]
+        empty_dict["name"] = matching_product["name"]
+        products_list.append(empty_dict)
+        
+    from sendgrid import SendGridAPIClient
+    from sendgrid.helpers.mail import Mail
+
+    SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY", default="OOPS, please set env var called 'SENDGRID_API_KEY'")
+    SENDGRID_TEMPLATE_ID = os.getenv("SENDGRID_TEMPLATE_ID", default="OOPS, please set env var called 'SENDGRID_TEMPLATE_ID'")
+    SENDER_ADDRESS = os.getenv("SENDER_ADDRESS", default="OOPS, please set env var called 'SENDER_ADDRESS'")
+
+    template_data = {
+        "total_price_usd": total,
+        "human_friendly_timestamp": current_time,
+        "products": products_list
+    }
+
+    client = SendGridAPIClient(SENDGRID_API_KEY)
+
+    message = Mail(from_email=SENDER_ADDRESS, to_emails=cust_email)
+    message.template_id = SENDGRID_TEMPLATE_ID
+    message.dynamic_template_data = template_data
+
+    try:
+        response = client.send(message)
+        print("RESPONSE:", type(response))
+        print(response.status_code)
+        print(response.body)
+        print(response.headers)
+
+    except Exception as err:
+        print(type(err))
+        print(err)
